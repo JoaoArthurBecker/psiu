@@ -1,23 +1,21 @@
 ﻿using PSIUWeb.Data.Interface;
 using PSIUWeb.Models;
-using System.Linq;
 
 namespace PSIUWeb.Data.EF
 {
-    public class EFCategoryRepository : ICategoryRepository
+    public class EFContentRepository : IContentRepository
+
     {
         private AppDbContext context;
-
-        public EFCategoryRepository(AppDbContext context)
+        public EFContentRepository(AppDbContext ctx)
         {
-            this.context = context;
+            context = ctx;
         }
-
-        public Category? Create(Category c)
+        public Content? Create(Content c)
         {
             try
             {
-                context.Categories?.Add(c);
+                context.Contents?.Add(c);
                 context.SaveChanges();
             }
             catch
@@ -26,26 +24,28 @@ namespace PSIUWeb.Data.EF
             }
 
             return c;
+
         }
 
-        public Category? Delete(int id)
+        public Content? Delete(int id)
         {
-            Category? c = GetCategoryById(id);
+            Content? c = GetContentById(id);
 
             if (c == null)
                 return null;
 
-            context.Categories?.Remove(c);
+            context.Contents?.Remove(c);
             context.SaveChanges();
 
             return c;
+
         }
 
-        public Category? GetCategoryById(int id)
+        public Content? GetContentById(int id)
         {
-            Category? c =
+            Content? c =
                 context
-                    .Categories?
+                    .Contents?
                     .Where(c => c.Id == id)
                     .FirstOrDefault();
 
@@ -53,16 +53,17 @@ namespace PSIUWeb.Data.EF
 
         }
 
-        public IQueryable<Category>? GetCategories()
+        public IQueryable<Content>? GetContents()
         {
-            return context.Categories;
+            return context.Contents;
+
         }
 
-        public Category? Update(Category c)
+        public Content? Update(Content c)
         {
             try
             {
-                context.Categories?.Update(c);
+                context.Contents?.Update(c);
                 context.SaveChanges();
             }
             catch
@@ -73,4 +74,5 @@ namespace PSIUWeb.Data.EF
             return c;
         }
     }
+    
 }
